@@ -114,5 +114,4 @@ class ControllerFactoryTest {
                 Arguments.of("POST", "/loginAction.do")
         );
     }
-
 }
