@@ -19,7 +19,7 @@ public class ViewResolver {
         this.postfix = postfix;
     }
 
-    public  String getPath(String viewName){
+    public String getPath(String viewName){
         //todo#6-1  prefix+viewNAme+postfix 반환 합니다.
         String realViewName = viewName.startsWith("/") ? viewName.substring(1) : viewName;
         return "%s%s%s".formatted(prefix, realViewName, postfix);
