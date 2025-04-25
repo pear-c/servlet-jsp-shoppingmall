@@ -27,9 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
                      """;
         log.debug("sql:{}",sql);
 
-        try(
-            PreparedStatement pstmt = connection.prepareStatement(sql)
-        ) {
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, userId);
             pstmt.setString(2, userPassword);
 
@@ -62,25 +60,24 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "SELECT * FROM users WHERE user_id = ?";
         log.debug("sql:{}",sql);
 
-        try(
-            PreparedStatement pstmt = connection.prepareStatement(sql)
-        ) {
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
             pstmt.setString(1, userId);
 
-            ResultSet rs =  pstmt.executeQuery();
-            if(rs.next()){
-                User user = new User(
-                        rs.getString("user_id"),
-                        rs.getString("user_name"),
-                        rs.getString("user_password"),
-                        rs.getString("user_birth"),
-                        User.Auth.valueOf(rs.getString("user_auth")),
-                        rs.getInt("user_point"),
-                        Objects.nonNull(rs.getTimestamp("created_at")) ? rs.getTimestamp("created_at").toLocalDateTime() : null,
-                        Objects.nonNull(rs.getTimestamp("latest_login_at")) ? rs.getTimestamp("latest_login_at").toLocalDateTime() : null
-                );
-                return Optional.of(user);
+            try(ResultSet rs =  pstmt.executeQuery()) {
+                if(rs.next()){
+                    User user = new User(
+                            rs.getString("user_id"),
+                            rs.getString("user_name"),
+                            rs.getString("user_password"),
+                            rs.getString("user_birth"),
+                            User.Auth.valueOf(rs.getString("user_auth")),
+                            rs.getInt("user_point"),
+                            Objects.nonNull(rs.getTimestamp("created_at")) ? rs.getTimestamp("created_at").toLocalDateTime() : null,
+                            Objects.nonNull(rs.getTimestamp("latest_login_at")) ? rs.getTimestamp("latest_login_at").toLocalDateTime() : null
+                    );
+                    return Optional.of(user);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -129,9 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "DELETE FROM users WHERE user_id = ?";
         log.debug("sql:{}",sql);
 
-        try (
-              PreparedStatement pstmt = connection.prepareStatement(sql)
-        ) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, userId);
 
             return pstmt.executeUpdate();
@@ -153,9 +148,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         log.debug("sql:{}",sql);
 
-        try (
-              PreparedStatement pstmt = connection.prepareStatement(sql)
-        ) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, user.getUserName());
             pstmt.setString(2, user.getUserPassword());
             pstmt.setString(3, user.getUserBirth());
@@ -175,12 +168,9 @@ public class UserRepositoryImpl implements UserRepository {
 
         //todo#3-6, 마지막 로그인 시간 업데이트, executeUpdate()을 반환합니다.
         String sql = "UPDATE users SET latest_login_at = ? WHERE user_id = ?";
-
         log.debug("sql:{}",sql);
 
-        try (
-              PreparedStatement pstmt = connection.prepareStatement(sql)
-        ) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setTimestamp(1, Timestamp.valueOf(latestLoginAt));
             pstmt.setString(2, userId);
 
@@ -196,17 +186,15 @@ public class UserRepositoryImpl implements UserRepository {
 
         //todo#3-7 userId와 일치하는 회원의 count를 반환합니다.
         String sql = "SELECT COUNT(*) FROM users WHERE user_id = ?";
-
         log.debug("sql:{}",sql);
 
-        try (
-              PreparedStatement pstmt = connection.prepareStatement(sql)
-        ) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, userId);
 
-            ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
-                return rs.getInt(1);
+            try(ResultSet rs = pstmt.executeQuery()) {
+                if(rs.next()) {
+                    return rs.getInt(1);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
