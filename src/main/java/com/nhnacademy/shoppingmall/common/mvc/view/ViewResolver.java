@@ -21,27 +21,25 @@ public class ViewResolver {
 
     public  String getPath(String viewName){
         //todo#6-1  prefix+viewNAme+postfix 반환 합니다.
-        return "";
+        String realViewName = viewName.startsWith("/") ? viewName.substring(1) : viewName;
+        return "%s%s%s".formatted(prefix, realViewName, postfix);
     }
 
     public boolean isRedirect(String viewName){
         //todo#6-2 REDIRECT_PREFIX가 포함되어 있는지 체크 합니다.
-        return false;
+        return viewName.toLowerCase().contains(REDIRECT_PREFIX);
     }
 
     public String getRedirectUrl(String viewName){
         //todo#6-3 REDIRECT_PREFIX를 제외한 url을 반환 합니다.
-
-        return "";
+        return viewName.substring(REDIRECT_PREFIX.length());
     }
 
     public String getLayOut(String viewName){
-
         /*todo#6-4 viewName에
            /admin/경로가 포함되었다면 DEFAULT_ADMIN_LAYOUT 반환 합니다.
            /admin/경로가 포함되어 있지않다면 DEFAULT_SHOP_LAYOUT 반환 합니다.
         */
-
-        return DEFAULT_SHOP_LAYOUT;
+        return getPath(viewName).contains("/admin/") ? DEFAULT_ADMIN_LAYOUT : DEFAULT_SHOP_LAYOUT;
     }
 }
