@@ -3,6 +3,7 @@ package com.nhnacademy.shoppingmall.common.mvc.transaction;
 import com.nhnacademy.shoppingmall.common.util.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -20,7 +21,6 @@ public class DbConnectionThreadLocal {
 
             //todo#2-2 connectiond의 Isolation level을 READ_COMMITED를 설정 합니다.
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-
             //todo#2-3 auto commit 을 false로 설정합니다.
             conn.setAutoCommit(false);
 
@@ -43,7 +43,6 @@ public class DbConnectionThreadLocal {
 
     public static void reset(){
         Connection conn = getConnection();
-
         if(conn == null) {
             return;
         }
@@ -57,11 +56,12 @@ public class DbConnectionThreadLocal {
                 conn.commit();
             }
         } catch (SQLException e) {
+            setSqlError(true);
             throw new RuntimeException(e);
         } finally {
             try {
                 //todo#2-4 사용이 완료된 connection은 close를 호출하여 connection pool에 반환합니다.
-                getConnection().close();
+                conn.close();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
