@@ -17,6 +17,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.Connection;
 
+import static jakarta.servlet.RequestDispatcher.ERROR_STATUS_CODE;
+
 @Slf4j
 @WebServlet(name = "frontServlet",urlPatterns = {"*.do"})
 public class FrontServlet extends HttpServlet {
@@ -35,7 +37,7 @@ public class FrontServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp){
         try{
             //todo#7-3 Connection pool로 부터 connection 할당 받습니다. connection은 Thread 내에서 공유됩니다.
-            DbConnectionThreadLocal.getConnection();
+            DbConnectionThreadLocal.initialize();
 
             BaseController baseController = (BaseController) controllerFactory.getController(req);
             String viewName = baseController.execute(req,resp);
@@ -56,8 +58,15 @@ public class FrontServlet extends HttpServlet {
             log.error("error:{}",e);
             DbConnectionThreadLocal.setSqlError(true);
             //todo#7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
+            req.setAttribute("status_code", req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE));
+            req.setAttribute("exception_type", req.getAttribute(RequestDispatcher.ERROR_EXCEPTION_TYPE));
+            req.setAttribute("message", req.getAttribute(RequestDispatcher.ERROR_MESSAGE));
+            req.setAttribute("exception", req.getAttribute(RequestDispatcher.ERROR_EXCEPTION));
+            req.setAttribute("request_uri", req.getAttribute(RequestDispatcher.ERROR_REQUEST_URI));
+            log.error("status_code:{}", req.getAttribute(ERROR_STATUS_CODE));
             try {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "서버 내부 오류 발생");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp");
+                rd.forward(req, resp);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
