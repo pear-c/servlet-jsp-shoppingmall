@@ -24,12 +24,11 @@ public class ApplicationListener implements ServletContextListener {
         //todo#12 application 시작시 테스트 계정인 admin,user 등록합니다. 만약 존재하면 등록하지 않습니다.
         ServletContext context = sce.getServletContext();
 
-        UserRepository userRepository = new UserRepositoryImpl();
         User admin = new User("admin", "관리자", "12345", "20000611", User.Auth.ROLE_ADMIN, 1000000, LocalDateTime.now(), null);
         User user = new User("user", "유저", "12345", "20000611", User.Auth.ROLE_USER, 1000000, LocalDateTime.now(), null);
-        userRepository.save(admin);
-        userRepository.save(user);
+        userService.saveUser(admin);
+        userService.saveUser(user);
 
-        context.setAttribute("userRepository", userRepository);
+        context.setAttribute("userService", userService);
     }
 }
