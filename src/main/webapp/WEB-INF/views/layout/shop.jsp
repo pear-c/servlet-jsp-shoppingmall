@@ -19,6 +19,27 @@
 
 </head>
 <body>
+<!-- 로그인 성공 or 회원가입 완료 시 알림창 -->
+<%
+    String welcomeUserName = (String) session.getAttribute("welcomeUserName");
+    Boolean signupSuccess = (Boolean) session.getAttribute("signupSuccess");
+
+    if (welcomeUserName != null) {
+        session.removeAttribute("welcomeUserName");
+%>
+<script>
+    alert("<%= welcomeUserName %>님, 환영합니다!");
+</script>
+<%
+} else if (signupSuccess != null && signupSuccess) {
+    session.removeAttribute("signupSuccess");
+%>
+<script>
+    alert("회원가입이 완료되었습니다! 로그인 해주세요.");
+</script>
+<%
+    }
+%>
 
     <div class="mainContainer">
         <header class="p-3 bg-dark text-white">
