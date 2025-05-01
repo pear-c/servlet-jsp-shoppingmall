@@ -52,7 +52,14 @@
 
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">마이페이지</a></li>
+                        <c:choose>
+                            <c:when test="${sessionScope.loginUser.userId eq 'admin'}">
+                                <li><a href="/admin/management.do" class="nav-link px-2 text-white">관리자 페이지</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a href="#" class="nav-link px-2 text-white">마이페이지</a></li>
+                            </c:otherwise>
+                        </c:choose>
                     </ul>
 
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -85,9 +92,6 @@
 
         <footer class="text-muted py-5">
             <div class="container">
-                <p class="float-end mb-1">
-                    <a href="#">Back to top</a>
-                </p>
                 <p class="mb-1">shoppingmall example is © nhnacademy.com</p>
             </div>
         </footer>
