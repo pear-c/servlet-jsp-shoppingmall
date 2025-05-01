@@ -18,9 +18,8 @@ public class LoginCheckFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         //todo#10 /mypage/ 하위경로의 접근은 로그인한 사용자만 접근할 수 있습니다.
         HttpSession session = req.getSession();
-        if(Objects.isNull(session) || Objects.isNull(session.getAttribute("user"))) {
-            res.sendRedirect(req.getContextPath() + "/loginAction.do");
-            return;
+        if(Objects.isNull(session.getAttribute("loginUser"))) {
+            res.sendRedirect(req.getContextPath() + "/login.do");
         }
 
         chain.doFilter(req, res);
