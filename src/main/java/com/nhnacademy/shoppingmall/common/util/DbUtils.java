@@ -23,7 +23,7 @@ public class DbUtils {
         }
 
         //todo#1-1 {ip},{database},{username},{password} 설정
-        basicDataSource.setUrl("jdbc:mysql://10.116.64.14:13306/nhn_academy_17");
+        basicDataSource.setUrl("jdbc:mysql://220.67.216.14:13306/nhn_academy_17");
         basicDataSource.setUsername("nhn_academy_17");
         basicDataSource.setPassword("e(kbT!u88]ReeHwL");
 
