@@ -24,5 +24,7 @@ public class AdminCheckFilter extends HttpFilter {
         if(user.getUserAuth().equals(User.Auth.ROLE_USER)) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "관리자 권한만 접근 가능");
         }
+
+        chain.doFilter(req, res);
     }
 }
