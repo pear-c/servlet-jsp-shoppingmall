@@ -25,8 +25,16 @@
           <ul class="list-group list-group-flush">
             <c:forEach var="category" items="${categoryList}">
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                  ${category.categoryName}
-                <a href="/admin/category/delete.do?id=${category.categoryId}" class="btn btn-sm btn-outline-danger">삭제</a>
+                <span>${category.categoryName}</span>
+
+                <c:if test="${not empty sessionScope.categoryDeleteError}">
+                  <small class="text-danger">${sessionScope.categoryDeleteError}</small>
+                  <c:remove var="categoryDeleteError" scope="session" />
+                </c:if>
+                <form method="post" action="/admin/category/delete.do" class="mb-0">
+                  <input type="hidden" name="category_id" value="${category.categoryId}" />
+                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('이 카테고리를 삭제하시겠습니까?');">삭제</button>
+                </form>
               </li>
             </c:forEach>
           </ul>
