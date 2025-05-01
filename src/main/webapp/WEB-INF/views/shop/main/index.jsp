@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     <c:forEach var="product" items="${productList}">
         <div class="col">
@@ -30,10 +29,6 @@
                 <div class="card-body">
                     <p class="card-text fw-bold">${product.productName}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a href="/product/view.do?productId=${product.productId}" class="btn btn-sm btn-outline-secondary">View</a>
-                            <a href="/admin/product/edit.do?productId=${product.productId}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                        </div>
                         <small class="text-muted">${product.createdAt}</small>
                     </div>
                 </div>
