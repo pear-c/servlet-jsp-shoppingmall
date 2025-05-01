@@ -19,14 +19,13 @@
                 <label for="user_password">비밀번호</label>
             </div>
 
-            <c:if test="${not empty errorMessage and fn:length(errorMessage) > 0}">
+            <c:if test="${not empty errorMessage}">
                 <small class="text-danger">${errorMessage}</small>
             </c:if>
 
             <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Sign in</button>
 
             <p class="mt-5 mb-3 text-muted">© 2022-2024</p>
-
         </form>
     </div>
 </div>
