@@ -7,6 +7,7 @@ import com.nhnacademy.shoppingmall.entity.user.domain.User;
 import com.nhnacademy.shoppingmall.entity.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -19,6 +20,11 @@ public class UserServiceImpl implements UserService {
     public User getUser(String userId){
         //todo#4-1 회원조회
         return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAllUsers();
     }
 
     @Override

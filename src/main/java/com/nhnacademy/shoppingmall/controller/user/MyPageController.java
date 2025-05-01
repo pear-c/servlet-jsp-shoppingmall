@@ -1,14 +1,14 @@
-package com.nhnacademy.shoppingmall.controller.register;
+package com.nhnacademy.shoppingmall.controller.user;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@RequestMapping(method = RequestMapping.Method.GET, value = {"/signup.do"})
-public class RegisterController implements BaseController {
+@RequestMapping(method = RequestMapping.Method.GET, value = "/mypage/index.do")
+public class MyPageController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        return "shop/register/register_form";
+        return "shop/main/mypage";
     }
 }

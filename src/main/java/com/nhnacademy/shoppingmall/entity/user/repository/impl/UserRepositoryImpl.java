@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -83,6 +85,36 @@ public class UserRepositoryImpl implements UserRepository {
             throw new RuntimeException(e);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "SELECT * FROM users";
+
+        List<User> userList = new ArrayList<>();
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    User user = new User(
+                            rs.getString("user_id"),
+                            rs.getString("user_name"),
+                            rs.getString("user_password"),
+                            rs.getString("user_birth"),
+                            User.Auth.valueOf(rs.getString("user_auth")),
+                            rs.getInt("user_point"),
+                            rs.getTimestamp("created_at").toLocalDateTime(),
+                            Objects.nonNull(rs.getTimestamp("latest_login_at")) ? rs.getTimestamp("latest_login_at").toLocalDateTime() : null
+                    );
+                    userList.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return userList;
     }
 
     @Override
