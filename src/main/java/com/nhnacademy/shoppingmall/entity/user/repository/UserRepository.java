@@ -1,6 +1,6 @@
-package com.nhnacademy.shoppingmall.user.repository;
+package com.nhnacademy.shoppingmall.entity.user.repository;
 
-import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.entity.user.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

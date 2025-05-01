@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" session="false" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <div style="margin: auto; width: 400px;">
     <div class="p-2">
@@ -15,6 +18,10 @@
                 <input type="password" name="user_password" class="form-control" id="user_password" placeholder="비밀번호" required>
                 <label for="user_password">비밀번호</label>
             </div>
+
+            <c:if test="${not empty errorMessage and fn:length(errorMessage) > 0}">
+                <small class="text-danger">${errorMessage}</small>
+            </c:if>
 
             <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Sign in</button>
 

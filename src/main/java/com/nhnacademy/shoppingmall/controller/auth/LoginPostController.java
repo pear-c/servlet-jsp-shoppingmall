@@ -2,10 +2,10 @@ package com.nhnacademy.shoppingmall.controller.auth;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
-import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
-import com.nhnacademy.shoppingmall.user.service.UserService;
-import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
+import com.nhnacademy.shoppingmall.entity.user.domain.User;
+import com.nhnacademy.shoppingmall.entity.user.repository.impl.UserRepositoryImpl;
+import com.nhnacademy.shoppingmall.entity.user.service.UserService;
+import com.nhnacademy.shoppingmall.entity.user.service.impl.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,17 +22,18 @@ public class LoginPostController implements BaseController {
         String userId = req.getParameter("user_id");
         String userPassword = req.getParameter("user_password");
 
-        // 로그인 확인
-        User loginUser = userService.doLogin(userId, userPassword);
+        try {
+            // 로그인 확인
+            User loginUser = userService.doLogin(userId, userPassword);
+            // 세션 등록
+            HttpSession session = req.getSession();
+            session.setAttribute("loginUser", loginUser);
+            session.setMaxInactiveInterval(60 * 60);
 
-        // 세션 등록
-        HttpSession session = req.getSession();
-        session.setAttribute("loginUser", loginUser);
-        session.setMaxInactiveInterval(60 * 60);
-
-        // 환영 메시지용 이름 세션에 저장
-        session.setAttribute("welcomeUserName", loginUser.getUserName());
-
-        return "redirect:/index.do";
+            return "redirect:/index.do";
+        } catch (RuntimeException e) {
+            req.setAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return "/shop/login/login_form";
+        }
     }
 }

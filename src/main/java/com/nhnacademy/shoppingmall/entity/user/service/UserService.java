@@ -1,6 +1,6 @@
-package com.nhnacademy.shoppingmall.user.service;
+package com.nhnacademy.shoppingmall.entity.user.service;
 
-import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.entity.user.domain.User;
 
 public interface UserService {
 

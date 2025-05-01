@@ -1,8 +1,8 @@
-package com.nhnacademy.shoppingmall.product.service.impl;
+package com.nhnacademy.shoppingmall.entity.product.service.impl;
 
-import com.nhnacademy.shoppingmall.product.domain.Product;
-import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
-import com.nhnacademy.shoppingmall.product.service.ProductService;
+import com.nhnacademy.shoppingmall.entity.product.domain.Product;
+import com.nhnacademy.shoppingmall.entity.product.repository.ProductRepository;
+import com.nhnacademy.shoppingmall.entity.product.service.ProductService;
 
 import java.util.List;
 

@@ -1,13 +1,12 @@
-package com.nhnacademy.shoppingmall.user.service.impl;
+package com.nhnacademy.shoppingmall.entity.user.service.impl;
 
-import com.nhnacademy.shoppingmall.user.exception.UserAlreadyExistsException;
-import com.nhnacademy.shoppingmall.user.exception.UserNotFoundException;
-import com.nhnacademy.shoppingmall.user.service.UserService;
-import com.nhnacademy.shoppingmall.user.domain.User;
-import com.nhnacademy.shoppingmall.user.repository.UserRepository;
+import com.nhnacademy.shoppingmall.entity.user.exception.UserAlreadyExistsException;
+import com.nhnacademy.shoppingmall.entity.user.exception.UserNotFoundException;
+import com.nhnacademy.shoppingmall.entity.user.service.UserService;
+import com.nhnacademy.shoppingmall.entity.user.domain.User;
+import com.nhnacademy.shoppingmall.entity.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;

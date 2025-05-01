@@ -1,6 +1,6 @@
-package com.nhnacademy.shoppingmall.product.service;
+package com.nhnacademy.shoppingmall.entity.product.service;
 
-import com.nhnacademy.shoppingmall.product.domain.Product;
+import com.nhnacademy.shoppingmall.entity.product.domain.Product;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.product.domain;
+package com.nhnacademy.shoppingmall.entity.product.domain;
 
 import java.time.LocalDateTime;
 
