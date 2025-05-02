@@ -62,16 +62,16 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public int save(Category category) {
+    public int save(String categoryName) {
         Connection conn = DbConnectionThreadLocal.getConnection();
 
         String sql = """
-                        INSERT INTO categoris(category_name)
+                        INSERT INTO categories(category_name)
                         VALUES(?)
                      """;
 
         try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, category.getCategoryName());
+            pstmt.setString(1, categoryName);
 
             return pstmt.executeUpdate();
         } catch (SQLException e) {

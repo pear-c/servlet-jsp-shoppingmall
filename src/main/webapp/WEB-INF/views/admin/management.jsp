@@ -12,6 +12,10 @@
           <h5 class="mb-0">카테고리 관리</h5>
         </div>
         <div class="card-body">
+          <c:if test="${not empty sessionScope.categoryCreateError}">
+            <small class="text-danger">${sessionScope.categoryCreateError}</small>
+            <c:remove var="categoryCreateError" scope="session" />
+          </c:if>
           <form method="post" action="/admin/category/create.do">
             <div class="form-floating mb-3">
               <input type="text" name="category_name" class="form-control" id="category_name" placeholder="카테고리 이름" required>
@@ -25,16 +29,24 @@
           <ul class="list-group list-group-flush">
             <c:forEach var="category" items="${categoryList}">
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>${category.categoryName}</span>
+                <span class="category-name">${category.categoryName}</span>
 
                 <c:if test="${not empty sessionScope.categoryDeleteError}">
                   <small class="text-danger">${sessionScope.categoryDeleteError}</small>
                   <c:remove var="categoryDeleteError" scope="session" />
                 </c:if>
-                <form method="post" action="/admin/category/delete.do" class="mb-0">
-                  <input type="hidden" name="category_id" value="${category.categoryId}" />
-                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('이 카테고리를 삭제하시겠습니까?');">삭제</button>
-                </form>
+
+                <div class="d-flex gap-2">
+                  <!-- 수정 버튼 -->
+                  <a href="/admin/category/edit.do?categoryId=${category.categoryId}" class="btn btn-sm btn-outline-primary">수정</a>
+
+                  <!-- 삭제 버튼 -->
+                  <form method="post" action="/admin/category/delete.do" class="mb-0">
+                    <input type="hidden" name="category_id" value="${category.categoryId}" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                            onclick="return confirm('이 카테고리를 삭제하시겠습니까?');">삭제</button>
+                  </form>
+                </div>
               </li>
             </c:forEach>
           </ul>

@@ -26,18 +26,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void saveCategory(Category category) {
-        if(isExist(category.getCategoryId())) {
-            throw new IllegalStateException("이미 존재하는 카테고리 입니다.");
+    public void saveCategoryByName(String categoryName) {
+        if(isExist(categoryName)) {
+            throw new RuntimeException();
         }
 
-        categoryRepository.save(category);
+        categoryRepository.save(categoryName);
     }
 
     @Override
     public void updateCategory(Category category) {
-        if(!isExist(category.getCategoryId())) {
-            throw new IllegalStateException("존재하지 않는 카테고리 입니다.");
+        if(!isExist(category.getCategoryName())) {
+            throw new RuntimeException();
         }
 
         categoryRepository.update(category);
@@ -46,10 +46,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(int categoryId) {
         if(!isExist(categoryId)) {
-            throw new IllegalStateException("존재하지 않는 카테고리 입니다.");
+            throw new RuntimeException();
         }
 
         categoryRepository.deleteByCategoryId(categoryId);
+    }
+
+    private boolean isExist(String categoryName) {
+        return categoryRepository.countByCategoryName(categoryName) > 0;
     }
 
     private boolean isExist(int categoryId) {
