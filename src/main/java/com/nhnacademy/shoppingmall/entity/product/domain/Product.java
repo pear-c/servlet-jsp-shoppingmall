@@ -11,6 +11,8 @@ public class Product {
     private String imagePath;
     private String explain;
 
+    private String categoryName;    // 카테고리 명 출력용 필드
+
     public Product(int productId, int categoryId, String productName, int productPrice, LocalDateTime createdAt, String imagePath, String explain) {
         this.productId = productId;
         this.categoryId = categoryId;
@@ -48,6 +50,10 @@ public class Product {
     public String getExplain() {
         return explain;
     }
+    
+    public String getCategoryName() {
+        return categoryName;
+    }
 
     public void setProductId(int productId) {
         this.productId = productId;
@@ -71,5 +77,9 @@ public class Product {
 
     public void setExplain(String explain) {
         this.explain = explain;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

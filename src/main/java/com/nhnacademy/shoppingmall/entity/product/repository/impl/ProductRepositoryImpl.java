@@ -76,10 +76,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         String sql = "SELECT * FROM products";
 
-        List<Product> productList = new ArrayList<>();
-
         try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            List<Product> productList = new ArrayList<>();
             try(ResultSet rs = pstmt.executeQuery()) {
                 while(rs.next()) {
                     Product product = new Product(
@@ -94,10 +93,44 @@ public class ProductRepositoryImpl implements ProductRepository {
                     productList.add(product);
                 }
             }
+            return productList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return productList;
+    }
+
+    @Override
+    public List<Product> findAllWithCategory() {
+        Connection conn = DbConnectionThreadLocal.getConnection();
+
+        String sql = """
+                         SELECT p.*, c.category_name
+                         FROM products p JOIN categories c ON p.category_id = c.category_id;
+                     """;
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            List<Product> productList = new ArrayList<>();
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    Product product = new Product(
+                            rs.getInt("product_id"),
+                            rs.getInt("category_id"),
+                            rs.getString("product_name"),
+                            rs.getInt("product_price"),
+                            rs.getTimestamp("product_created_at").toLocalDateTime(),
+                            rs.getString("product_image_path"),
+                            rs.getString("product_explain")
+                    );
+                    product.setCategoryName(rs.getString("category_name"));
+
+                    productList.add(product);
+                }
+            }
+            return productList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -106,11 +139,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         String sql = "SELECT * FROM products WHERE category_id = ?";
 
-        List<Product> productList = new ArrayList<>();
         try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, categoryId);
 
+            List<Product> productList = new ArrayList<>();
             try(ResultSet rs = pstmt.executeQuery()) {
                 while(rs.next()) {
                     Product product = new Product(
@@ -125,10 +158,10 @@ public class ProductRepositoryImpl implements ProductRepository {
                     productList.add(product);
                 }
             }
+            return productList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return productList;
     }
 
     @Override
