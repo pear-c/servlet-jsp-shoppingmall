@@ -137,7 +137,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> findByCategoryId(int categoryId) {
         Connection conn = DbConnectionThreadLocal.getConnection();
 
-        String sql = "SELECT * FROM products WHERE category_id = ?";
+        String sql = """
+                         SELECT p.*, c.category_name
+                         FROM products p
+                         JOIN categories c ON p.category_id = c.category_id
+                         WHERE p.category_id = ?
+                     """;
 
         try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -155,6 +160,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getString("product_image_path"),
                             rs.getString("product_explain")
                     );
+                    product.setCategoryName(rs.getString("category_name"));
+
                     productList.add(product);
                 }
             }

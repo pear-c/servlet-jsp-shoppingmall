@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updateCategory(Category category) {
-        if(!isExist(category.getCategoryName())) {
+        if(isExist(category.getCategoryName())) {
             throw new RuntimeException();
         }
 

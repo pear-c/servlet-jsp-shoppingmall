@@ -12,7 +12,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <a href="/index.do" class="text-decoration-none">전체 보기</a>
+                        <a href="/index.do" class="text-decoration-none text-dark">전체 보기</a>
                     </li>
                     <c:forEach var="category" items="${categoryList}">
                         <li class="list-group-item">
@@ -53,8 +53,8 @@
                                     </c:if>
                                 </p>
                                 <span class="fw-bold text-dark">
-                        <fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true" />원
-                    </span>
+                                    <fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true" />원
+                                </span>
                             </div>
                         </div>
                     </div>

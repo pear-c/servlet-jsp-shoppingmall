@@ -24,10 +24,19 @@ public class IndexController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
+        String categoryIdParam = req.getParameter("category_id");
 
-        List<Product> productList = productService.getProductListWithCategory();
+        // 카테고리 별 상품 목록
+        List<Product> productList;
+        if(categoryIdParam != null && !categoryIdParam.isEmpty()) {
+            int categoryId = Integer.parseInt(categoryIdParam);
+            productList = productService.getProductListByCategory(categoryId);
+        } else {
+            productList = productService.getProductListWithCategory();
+        }
         req.setAttribute("productList", productList);
 
+        // 카테고리 리스트
         List<Category> categoryList = categoryService.getCategoryList();
         req.setAttribute("categoryList", categoryList);
 
