@@ -10,6 +10,7 @@ public interface ProductRepository {
     int save(Product product);
     Optional<Product> findByProductId(int productId);
     List<Product> findAllProducts();
+    List<Product> findByIds(List<Integer> productIds);
     List<Product> findAllWithCategory();
     List<Product> findByCategoryId(int categoryId);
     int deleteByProductId(int productId);

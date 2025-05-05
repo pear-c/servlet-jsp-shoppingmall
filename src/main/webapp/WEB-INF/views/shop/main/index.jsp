@@ -81,6 +81,38 @@
                     </ul>
                 </nav>
             </div>
+
+            <!-- 최근 본 상품 -->
+            <c:if test="${not empty recentProductList}">
+                <div class="mt-5">
+                    <h5 class="fw-bold">최근 본 상품</h5>
+                    <div class="d-flex overflow-auto gap-3 pt-2 pb-3">
+                        <c:forEach var="product" items="${recentProductList}">
+                            <div class="card" style="min-width: 180px;">
+                                <a href="/product/detail.do?product_id=${product.productId}">
+                                    <img
+                                            src="${pageContext.request.contextPath}/resources/images/${product.imagePath}"
+                                            class="card-img-top"
+                                            alt="최근 본 상품"
+                                            style="height: 140px; object-fit: contain; background-color: #f8f9fa;"
+                                            onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/resources/no-image.png';"
+                                    />
+                                </a>
+                                <div class="card-body p-2">
+                                    <p class="card-text mb-1 text-truncate">
+                                        <a href="/product/detail.do?product_id=${product.productId}" class="text-dark text-decoration-none">
+                                                ${product.productName}
+                                        </a>
+                                    </p>
+                                    <small class="text-muted">
+                                        <fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true"/>원
+                                    </small>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>

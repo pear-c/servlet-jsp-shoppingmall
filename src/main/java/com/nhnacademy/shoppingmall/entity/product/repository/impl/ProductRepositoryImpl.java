@@ -6,10 +6,8 @@ import com.nhnacademy.shoppingmall.entity.product.domain.Product;
 import com.nhnacademy.shoppingmall.entity.product.repository.ProductRepository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProductRepositoryImpl implements ProductRepository {
 
@@ -95,6 +93,54 @@ public class ProductRepositoryImpl implements ProductRepository {
                 }
             }
             return productList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Product> findByIds(List<Integer> productIds) {
+        if(productIds == null || productIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Connection conn = DbConnectionThreadLocal.getConnection();
+
+        String placeholders = productIds.stream()
+                .map(id -> "?")
+                .collect(Collectors.joining(", "));
+
+        String sql = String.format(
+                     """
+                        SELECT p.*, c.category_name
+                        FROM products p JOIN categories c ON p.category_id = c.category_id
+                        WHERE p.product_id IN (%s)
+                     """, placeholders);
+
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for(int i=0; i<productIds.size(); i++) {
+                pstmt.setInt(i+1, productIds.get(i));
+            }
+
+            List<Product> result = new ArrayList<>();
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    Product product = new Product(
+                            rs.getInt("product_id"),
+                            rs.getInt("category_id"),
+                            rs.getString("product_name"),
+                            rs.getInt("product_price"),
+                            rs.getTimestamp("product_created_at").toLocalDateTime(),
+                            rs.getString("product_image_path"),
+                            rs.getString("product_explain")
+                    );
+                    product.setCategoryName(rs.getString("category_name"));
+
+                    result.add(product);
+                }
+                return result;
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

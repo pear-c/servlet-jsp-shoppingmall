@@ -27,16 +27,14 @@
 
           <hr/>
           <h6 class="mt-3">등록된 카테고리</h6>
+          <c:if test="${not empty sessionScope.categoryDeleteError}">
+            <small class="text-danger">${sessionScope.categoryDeleteError}</small>
+            <c:remove var="categoryDeleteError" scope="session" />
+          </c:if>
           <ul class="list-group list-group-flush">
             <c:forEach var="category" items="${categoryList}">
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="category-name">${category.categoryName}</span>
-
-                <c:if test="${not empty sessionScope.categoryDeleteError}">
-                  <small class="text-danger">${sessionScope.categoryDeleteError}</small>
-                  <c:remove var="categoryDeleteError" scope="session" />
-                </c:if>
-
                 <div class="d-flex gap-2">
                   <!-- 수정 버튼 -->
                   <a href="/admin/category/edit.do?categoryId=${category.categoryId}" class="btn btn-sm btn-outline-primary">수정</a>

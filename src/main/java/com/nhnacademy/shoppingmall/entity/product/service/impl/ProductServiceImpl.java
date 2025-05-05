@@ -26,6 +26,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductListByIds(List<Integer> productIds) {
+        return productRepository.findByIds(productIds);
+    }
+
+    @Override
     public List<Product> getProductListWithCategory() {
         return productRepository.findAllWithCategory();
     }

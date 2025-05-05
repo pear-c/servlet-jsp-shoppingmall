@@ -8,6 +8,7 @@ import java.util.List;
 public interface ProductService {
     Product getProduct(int productId);
     List<Product> getProductList();
+    List<Product> getProductListByIds(List<Integer> productIds);
     List<Product> getProductListWithCategory();
     List<Product> getProductListByCategory(int categoryId);
     void saveProduct(Product product);
@@ -16,4 +17,5 @@ public interface ProductService {
     // 페이징
     Page<Product> getAllProductPage(int offset, int limit);
     Page<Product> getProductPageByCategory(int categoryId, int offset, int limit);
+
 }

@@ -4,6 +4,7 @@ import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 
 import com.nhnacademy.shoppingmall.common.page.Page;
+import com.nhnacademy.shoppingmall.common.util.CookieUtils;
 import com.nhnacademy.shoppingmall.entity.category.domain.Category;
 import com.nhnacademy.shoppingmall.entity.category.repository.Impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.entity.category.service.CategoryService;
@@ -15,7 +16,8 @@ import com.nhnacademy.shoppingmall.entity.product.service.impl.ProductServiceImp
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequestMapping(method = RequestMapping.Method.GET,value = {"/index.do"})
 public class IndexController implements BaseController {
@@ -50,6 +52,27 @@ public class IndexController implements BaseController {
         // 카테고리 리스트
         List<Category> categoryList = categoryService.getCategoryList();
         req.setAttribute("categoryList", categoryList);
+
+        // 최근 본 상품(쿠키 기반)
+        String recentCookie = CookieUtils.getCookieValue(req, "recentProductIds");
+        List<Product> recentProductList = new ArrayList<>();
+        if(recentCookie != null && !recentCookie.isEmpty()) {
+            List<Integer> productIds = Arrays.stream(recentCookie.split("-"))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+            List<Product> fetched = productService.getProductListByIds(productIds);
+
+            // 정렬
+            Map<Integer, Product> productMap = fetched.stream()
+                    .collect(Collectors.toMap(Product::getProductId, p -> p));
+
+            recentProductList = productIds.stream()
+                    .map(productMap::get)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+        req.setAttribute("recentProductList", recentProductList);
 
         return "shop/main/index";
     }
