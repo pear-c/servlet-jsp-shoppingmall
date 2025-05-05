@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.controller.admin;
+package com.nhnacademy.shoppingmall.controller.product;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
@@ -10,34 +10,26 @@ import com.nhnacademy.shoppingmall.entity.product.domain.Product;
 import com.nhnacademy.shoppingmall.entity.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.entity.product.service.ProductService;
 import com.nhnacademy.shoppingmall.entity.product.service.impl.ProductServiceImpl;
-import com.nhnacademy.shoppingmall.entity.user.domain.User;
-import com.nhnacademy.shoppingmall.entity.user.repository.impl.UserRepositoryImpl;
-import com.nhnacademy.shoppingmall.entity.user.service.UserService;
-import com.nhnacademy.shoppingmall.entity.user.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
-@RequestMapping(method = RequestMapping.Method.GET, value = "/admin/management.do")
-public class AdminController implements BaseController {
+@RequestMapping(method = RequestMapping.Method.GET, value = "/admin/product/edit.do")
+public class ProductEditFormController implements BaseController {
 
-    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
-    private final CategoryService categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl());
     private final ProductService productService = new ProductServiceImpl(new ProductRepositoryImpl());
+    private final CategoryService categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-
-        List<User> userList = userService.getAllUsers();
-        req.setAttribute("userList", userList);
-
+        int productId = Integer.parseInt(req.getParameter("product_id"));
+        Product product = productService.getProduct(productId);
         List<Category> categoryList = categoryService.getCategoryList();
+
+        req.setAttribute("product", product);
         req.setAttribute("categoryList", categoryList);
 
-        List<Product> productList = productService.getProductListWithCategory();
-        req.setAttribute("productList", productList);
-
-        return "admin/management";
+        return "shop/product/product_edit";
     }
 }

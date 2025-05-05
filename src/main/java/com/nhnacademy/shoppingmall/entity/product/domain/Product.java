@@ -23,6 +23,15 @@ public class Product {
         this.explain = explain;
     }
 
+    public Product(int categoryId, String productName, int productPrice, LocalDateTime createdAt, String imagePath, String explain) {
+        this.categoryId = categoryId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.createdAt = createdAt;
+        this.imagePath = imagePath;
+        this.explain = explain;
+    }
+
     public int getProductId() {
         return productId;
     }

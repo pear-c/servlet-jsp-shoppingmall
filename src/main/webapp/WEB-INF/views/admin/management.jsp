@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="true" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="container py-4">
   <h2 class="mb-4 text-center">관리자 통합 관리 페이지</h2>
@@ -95,6 +96,48 @@
             <button type="submit" class="btn btn-outline-success w-100">상품 등록</button>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 등록된 상품 목록 -->
+  <div class="col-md-12">
+    <div class="card border-secondary">
+      <div class="card-header bg-light fw-bold">등록된 상품 목록</div>
+      <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0 text-center">
+          <thead class="table-light">
+          <tr>
+            <th>이미지</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>카테고리</th>
+            <th>관리</th>
+          </tr>
+          </thead>
+          <tbody>
+          <c:forEach var="product" items="${productList}">
+            <tr>
+              <td>
+                <img src="${pageContext.request.contextPath}/resources/images/${product.imagePath}"
+                     onerror="this.src='${pageContext.request.contextPath}/resources/no-image.png'"
+                     style="width: 80px; height: 80px; object-fit: cover;"/>
+              </td>
+              <td>${product.productName}</td>
+              <td><fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true" /> 원</td>
+              <td>${product.categoryName}</td>
+              <td>
+                <a href="/product/detail.do?product_id=${product.productId}" class="btn btn-sm btn-outline-secondary me-1">상세보기</a>
+                <a href="/admin/product/edit.do?product_id=${product.productId}" class="btn btn-sm btn-outline-primary">수정</a>
+                <form method="post" action="/admin/product/delete.do" class="d-inline">
+                  <input type="hidden" name="product_id" value="${product.productId}" />
+                  <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+                </form>
+              </td>
+            </tr>
+          </c:forEach>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

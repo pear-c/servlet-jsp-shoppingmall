@@ -48,11 +48,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Product product) {
-        if(!isExist(product.getProductId())) {
+    public void deleteProduct(int productId) {
+        if(!isExist(productId)) {
             throw new IllegalStateException("해당 상품 아이디는 없는 상품입니다.");
         }
-        productRepository.deleteByProductId(product.getProductId());
+        productRepository.deleteByProductId(productId);
     }
 
     private boolean isExist(int productId) {

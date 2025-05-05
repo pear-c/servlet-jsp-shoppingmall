@@ -27,7 +27,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             pstmt.setString(2, product.getProductName());
             pstmt.setInt(3, product.getProductPrice());
             pstmt.setTimestamp(4, Timestamp.valueOf(product.getCreatedAt()));
-            if(!product.getImagePath().isEmpty() && Objects.nonNull(product.getImagePath())) {
+            if(Objects.nonNull(product.getImagePath()) && !product.getImagePath().isEmpty()) {
                 pstmt.setString(5, product.getImagePath());
             } else {
                 pstmt.setNull(5, Types.VARCHAR);
@@ -195,7 +195,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         String sql = """
                          UPDATE products
-                         SET category_id = ?, product_name = ?, product_price = ?, product_image_path = ?, product_explain = ?
+                         SET category_id = ?, product_name = ?, product_price = ?, product_created_at = ?, product_image_path = ?, product_explain = ?
                          WHERE product_id = ?
                      """;
 
@@ -204,7 +204,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             pstmt.setInt(1, product.getCategoryId());
             pstmt.setString(2, product.getProductName());
             pstmt.setInt(3, product.getProductPrice());
-            pstmt.setString(4, product.getImagePath());
+            pstmt.setTimestamp(4, Timestamp.valueOf(product.getCreatedAt()));
             if(!product.getImagePath().isEmpty() && Objects.nonNull(product.getImagePath())) {
                 pstmt.setString(5, product.getImagePath());
             } else {
