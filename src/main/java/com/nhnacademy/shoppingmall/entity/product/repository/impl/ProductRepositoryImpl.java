@@ -1,6 +1,7 @@
 package com.nhnacademy.shoppingmall.entity.product.repository.impl;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.entity.product.domain.Product;
 import com.nhnacademy.shoppingmall.entity.product.repository.ProductRepository;
 
@@ -237,5 +238,112 @@ public class ProductRepositoryImpl implements ProductRepository {
             throw new RuntimeException(e);
         }
         return 0;
+    }
+
+    @Override
+    public Page<Product> findAllPaged(int offset, int limit) {
+        Connection conn = DbConnectionThreadLocal.getConnection();
+        String sql = """
+                        SELECT p.*, c.category_name
+                        FROM products p
+                        JOIN categories c ON p.category_id = c.category_id
+                        ORDER BY p.product_id DESC 
+                        LIMIT ? OFFSET ?
+                     """;
+
+        List<Product> productList = new ArrayList<>();
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, limit);
+            pstmt.setInt(2, offset);
+
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product(
+                            rs.getInt("product_id"),
+                            rs.getInt("category_id"),
+                            rs.getString("product_name"),
+                            rs.getInt("product_price"),
+                            rs.getTimestamp("product_created_at").toLocalDateTime(),
+                            rs.getString("product_image_path"),
+                            rs.getString("product_explain")
+                    );
+                    product.setCategoryName(rs.getString("category_name"));
+
+                    productList.add(product);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        long totalCount = countAll();
+        return new Page<>(productList, totalCount);
+    }
+
+    @Override
+    public Page<Product> findByCategoryIdPaged(int categoryId, int offset, int limit) {
+        Connection conn = DbConnectionThreadLocal.getConnection();
+        String sql = """
+                        SELECT p.*, c.category_name
+                        FROM products p
+                        JOIN categories c ON p.category_id = c.category_id
+                        WHERE p.category_id = ?
+                        ORDER BY p.product_id DESC 
+                        LIMIT ? OFFSET ?
+                     """;
+
+        List<Product> productList = new ArrayList<>();
+        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, categoryId);
+            pstmt.setInt(2, limit);
+            pstmt.setInt(3, offset);
+
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product(
+                            rs.getInt("product_id"),
+                            rs.getInt("category_id"),
+                            rs.getString("product_name"),
+                            rs.getInt("product_price"),
+                            rs.getTimestamp("product_created_at").toLocalDateTime(),
+                            rs.getString("product_image_path"),
+                            rs.getString("product_explain")
+                    );
+                    product.setCategoryName(rs.getString("category_name"));
+
+                    productList.add(product);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        long totalCount = countByCategory(categoryId);
+        return new Page<>(productList, totalCount);
+    }
+
+    private long countAll() {
+        Connection conn = DbConnectionThreadLocal.getConnection();
+        String sql = "SELECT COUNT(*) FROM products";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rs.getLong(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private long countByCategory(int categoryId) {
+        Connection conn = DbConnectionThreadLocal.getConnection();
+        String sql = "SELECT COUNT(*) FROM products WHERE category_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rs.getLong(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

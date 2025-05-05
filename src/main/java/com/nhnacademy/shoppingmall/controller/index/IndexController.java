@@ -3,6 +3,7 @@ package com.nhnacademy.shoppingmall.controller.index;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.entity.category.domain.Category;
 import com.nhnacademy.shoppingmall.entity.category.repository.Impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.entity.category.service.CategoryService;
@@ -25,16 +26,26 @@ public class IndexController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         String categoryIdParam = req.getParameter("category_id");
+        String pageParm = req.getParameter("page");
 
-        // 카테고리 별 상품 목록
-        List<Product> productList;
+        // 페이지네이션
+        int page = 1;
+        int limit = 9;
+        if(pageParm != null && !pageParm.isEmpty()) {
+            page = Integer.parseInt(pageParm);
+        }
+        int offset = (page - 1) * limit;
+
+        Page<Product> productPage;
         if(categoryIdParam != null && !categoryIdParam.isEmpty()) {
             int categoryId = Integer.parseInt(categoryIdParam);
-            productList = productService.getProductListByCategory(categoryId);
+            productPage = productService.getProductPageByCategory(categoryId, offset, limit);
+            req.setAttribute("selectedCategoryId", categoryId);
         } else {
-            productList = productService.getProductListWithCategory();
+            productPage = productService.getAllProductPage(offset, limit);
         }
-        req.setAttribute("productList", productList);
+        req.setAttribute("productPage", productPage);
+        req.setAttribute("productList", productPage.getContent());
 
         // 카테고리 리스트
         List<Category> categoryList = categoryService.getCategoryList();

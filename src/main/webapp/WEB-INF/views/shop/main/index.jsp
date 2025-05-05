@@ -60,6 +60,27 @@
                     </div>
                 </c:forEach>
             </div>
+
+            <!-- 페이지 네비게이션 -->
+            <div class="mt-4 d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination">
+                        <c:set var="totalCount" value="${productPage.totalCount}" />
+                        <c:set var="pageSize" value="9" />
+                        <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+                        <c:set var="totalPages" value="${(totalCount + pageSize - 1) / pageSize}" />
+
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                <a class="page-link"
+                                   href="/index.do?page=${i}<c:if test='${not empty selectedCategoryId}'>&category_id=${selectedCategoryId}</c:if>">
+                                        ${i}
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.entity.product.service.impl;
 
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.entity.product.domain.Product;
 import com.nhnacademy.shoppingmall.entity.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.entity.product.service.ProductService;
@@ -53,6 +54,16 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalStateException("해당 상품 아이디는 없는 상품입니다.");
         }
         productRepository.deleteByProductId(productId);
+    }
+
+    @Override
+    public Page<Product> getAllProductPage(int offset, int limit) {
+        return productRepository.findAllPaged(offset, limit);
+    }
+
+    @Override
+    public Page<Product> getProductPageByCategory(int categoryId, int offset, int limit) {
+        return productRepository.findByCategoryIdPaged(categoryId, offset, limit);
     }
 
     private boolean isExist(int productId) {
