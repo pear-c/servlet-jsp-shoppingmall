@@ -41,4 +41,45 @@
       </div>
     </div>
   </div>
+
+  <!-- 주문 내역 표시 -->
+  <c:if test="${not empty orderList}">
+    <h4 class="mt-5 mb-3">🧾 주문 내역</h4>
+    <c:forEach var="order" items="${orderList}">
+      <div class="card mb-3">
+        <div class="card-header bg-light">
+          주문일:
+          <fmt:formatDate value="${order.orderCreatedAt}" pattern="yyyy-MM-dd HH:mm" />
+          &nbsp;| 총 결제금액:
+          <fmt:formatNumber value="${order.totalPrice}" groupingUsed="true" />원
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-bordered mb-0 text-center">
+            <thead class="table-light">
+            <tr>
+              <th>상품 ID</th>
+              <th>수량</th>
+              <th>가격</th>
+              <th>소계</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="item" items="${order.orderItems}">
+              <tr>
+                <td>${item.orderProductId}</td>
+                <td>${item.quantity}</td>
+                <td><fmt:formatNumber value="${item.itemPrice}" groupingUsed="true" />원</td>
+                <td><fmt:formatNumber value="${item.itemPrice * item.quantity}" groupingUsed="true" />원</td>
+              </tr>
+            </c:forEach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </c:forEach>
+  </c:if>
+
+  <c:if test="${empty orderList}">
+    <p class="text-muted mt-4">주문 내역이 없습니다.</p>
+  </c:if>
 </div>

@@ -32,3 +32,25 @@ CREATE TABLE products(
      CONSTRAINT fk_products_category FOREIGN KEY(category_id) REFERENCES categories(category_id)
      ON DELETE RESTRICT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='상품';
+
+-- orders 테이블
+CREATE TABLE orders(
+    order_id int AUTO_INCREMENT NOT NULL COMMENT '주문 ID',
+    user_id varchar(50) NOT NULL COMMENT '주문 회원',
+    total_price int NOT NULL COMMENT '총 결제 금액',
+    order_created_at datetime NOT NULL COMMENT '주문 일시',
+    PRIMARY KEY(order_id),
+    CONSTRAINT fk_orders_user FOREIGN KEY(user_id) REFERENCES users(user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='주문';
+
+-- order_items 테이블
+CREATE TABLE order_items(
+    order_item_id int AUTO_INCREMENT NOT NULL COMMENT '주문 상세 ID',
+    order_id int NOT NULL COMMENT '주문 ID',
+    product_id int NOT NULL COMMENT '상품 ID',
+    quantity int NOT NULL COMMENT '주문 수량',
+    item_price int NOT NULL COMMENT '상품 가격',
+    PRIMARY KEY(order_item_id),
+    CONSTRAINT fk_order_items_order FOREIGN KEY(order_id) REFERENCES orders(order_id),
+    CONSTRAINT fk_order_items_product FOREIGN KEY(product_id) REFERENCES products(product_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='주문 상세 내역';

@@ -1,5 +1,7 @@
 package com.nhnacademy.shoppingmall.entity.cart.domain;
 
+import com.nhnacademy.shoppingmall.entity.product.domain.Product;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,5 +38,11 @@ public class Cart {
 
     public void clear() {
         itemMap.clear();
+    }
+
+    public int calculateTotalPrice(Map<CartItem, Product> cartItemProductMap) {
+        return cartItemProductMap.entrySet().stream()
+                .mapToInt(entry -> entry.getKey().getCartQuantity() * entry.getValue().getProductPrice())
+                .sum();
     }
 }

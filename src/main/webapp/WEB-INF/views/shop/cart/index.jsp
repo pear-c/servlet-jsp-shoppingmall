@@ -5,6 +5,11 @@
 <div class="container py-5">
     <h2 class="mb-4">🛒 장바구니</h2>
 
+    <c:if test="${not empty sessionScope.error}">
+        <div class="alert alert-danger">${sessionScope.error}</div>
+        <c:remove var="error" scope="session"/>
+    </c:if>
+
     <c:choose>
         <c:when test="${empty cartItemProductMap}">
             <div class="alert alert-info">장바구니가 비어 있습니다.</div>
@@ -67,7 +72,9 @@
                 <form method="post" action="/cart/clear.do" class="d-inline">
                     <button type="submit" class="btn btn-outline-secondary">장바구니 비우기</button>
                 </form>
-                <a href="/order/checkout.do" class="btn btn-primary ms-2">주문하기</a>
+                <form method="post" action="/order/checkout.do" class="d-inline">
+                    <button type="submit" class="btn btn-primary ms-2">주문하기</button>
+                </form>
             </div>
         </c:otherwise>
     </c:choose>
