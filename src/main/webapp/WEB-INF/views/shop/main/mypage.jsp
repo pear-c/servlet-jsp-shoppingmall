@@ -34,6 +34,11 @@
           <td><fmt:formatNumber value="${sessionScope.loginUser.userPoint}" type="number"/> P</td>
         </tr>
       </table>
+      <div class="text-end mt-3" style="max-width: 700px; margin: 0 auto;">
+        <form method="post" action="/mypage/user/delete.do" onsubmit="return confirm('탈퇴하시겠습니까?');">
+          <button type="submit" class="btn btn-outline-danger">회원 탈퇴</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
