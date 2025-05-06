@@ -47,6 +47,7 @@
                             </c:when>
                             <c:otherwise>
                                 <li><a href="/mypage/index.do" class="nav-link px-2 text-white">마이페이지</a></li>
+                                <li><a href="/cart/view.do" class="nav-link px-2 text-white">🛒 장바구니</a></li>
                             </c:otherwise>
                         </c:choose>
                     </ul>

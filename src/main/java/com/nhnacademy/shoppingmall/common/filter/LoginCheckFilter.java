@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
-@WebFilter(filterName = "loginCheckFilter", urlPatterns = "/mypage/*")
+@WebFilter(filterName = "loginCheckFilter", urlPatterns = {"/mypage/*", "/cart/*"})
 public class LoginCheckFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -20,6 +20,7 @@ public class LoginCheckFilter extends HttpFilter {
         HttpSession session = req.getSession();
         if(Objects.isNull(session.getAttribute("loginUser"))) {
             res.sendRedirect(req.getContextPath() + "/login.do");
+            return;
         }
 
         chain.doFilter(req, res);

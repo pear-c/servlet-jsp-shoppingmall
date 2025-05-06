@@ -50,6 +50,22 @@
                 등록일: <fmt:formatDate value="${createdDate}" pattern="yyyy-MM-dd HH:mm" />
             </p>
 
+            <!-- 장바구니 담기 -->
+            <c:if test="${sessionScope.loginUser.userId ne 'admin'}">
+                <c:if test="${param.duplicated eq 'true'}">
+                    <p class="text-danger small mb-1">※ 이미 장바구니에 담긴 상품입니다.</p>
+                </c:if>
+
+                <form method="post" action="/cart/add.do" class="mt-3">
+                    <input type="hidden" name="product_id" value="${product.productId}" />
+
+                    <div class="input-group mb-3" style="max-width: 200px;">
+                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="${product.productStock}" required />
+                        <button type="submit" class="btn btn-outline-primary">장바구니 담기</button>
+                    </div>
+                </form>
+            </c:if>
+
             <a href="/index.do" class="btn btn-secondary mt-3">← 메인으로 돌아가기</a>
         </div>
     </div>
