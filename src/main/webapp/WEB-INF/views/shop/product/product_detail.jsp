@@ -30,6 +30,20 @@
             </p>
             <h5 class="fw-bold text-dark"><fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true" />원</h5>
 
+            <p class="mt-2">
+                <span class="badge bg-${product.productStock > 0 ? 'success' : 'danger'}">
+                    재고:
+                    <c:choose>
+                        <c:when test="${product.productStock > 0}">
+                            ${product.productStock}개 남음
+                        </c:when>
+                        <c:otherwise>
+                            품절
+                        </c:otherwise>
+                    </c:choose>
+                </span>
+            </p>
+
             <br>
 
             <p class="text-muted">

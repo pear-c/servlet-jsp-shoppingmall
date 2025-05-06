@@ -30,6 +30,7 @@ public class ProductCreateController implements BaseController {
         int productPrice = Integer.parseInt(req.getParameter("product_price"));
         String explain = req.getParameter("product_explain");
         int categoryId = Integer.parseInt(req.getParameter("category_id"));
+        int productStock = Integer.parseInt(req.getParameter("product_stock"));
 
         try {
             Part imagePart = req.getPart("product_image");
@@ -37,7 +38,7 @@ public class ProductCreateController implements BaseController {
             if(imagePart != null && imagePart.getSize() > 0) {
                 imagePath = saveImageToWebapp(imagePart, req);
             }
-            Product product = new Product(categoryId, productName, productPrice, LocalDateTime.now(), imagePath, explain);
+            Product product = new Product(categoryId, productName, productPrice, LocalDateTime.now(), imagePath, explain, productStock);
             productService.saveProduct(product);
         } catch (Exception e) {
             throw new RuntimeException(e);

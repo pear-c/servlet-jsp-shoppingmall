@@ -23,6 +23,12 @@
     </div>
 
     <div class="form-floating mb-3">
+      <input type="number" class="form-control" name="product_stock" id="product_stock"
+             value="${product.productStock}" min="0" required />
+      <label for="product_stock">재고 수량</label>
+    </div>
+
+    <div class="form-floating mb-3">
       <select class="form-select" name="category_id" id="category_id" required>
         <c:forEach var="category" items="${categoryList}">
           <option value="${category.categoryId}" ${product.categoryId == category.categoryId ? 'selected' : ''}>

@@ -16,8 +16,8 @@ public class ProductRepositoryImpl implements ProductRepository {
         Connection conn = DbConnectionThreadLocal.getConnection();
 
         String sql = """
-                        INSERT INTO products(category_id, product_name, product_price, product_created_at, product_image_path, product_explain)
-                        VALUES(?, ?, ?, ?, ?, ?)
+                        INSERT INTO products(category_id, product_name, product_price, product_created_at, product_image_path, product_explain, product_stock)
+                        VALUES(?, ?, ?, ?, ?, ?, ?)
                      """;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -32,6 +32,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                 pstmt.setNull(5, Types.VARCHAR);
             }
             pstmt.setString(6, product.getExplain());
+            pstmt.setInt(7, product.getProductStock());
 
             return pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -58,7 +59,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     return Optional.of(product);
                 }
@@ -87,7 +89,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     productList.add(product);
                 }
@@ -132,7 +135,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     product.setCategoryName(rs.getString("category_name"));
 
@@ -167,7 +171,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     product.setCategoryName(rs.getString("category_name"));
 
@@ -205,7 +210,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     product.setCategoryName(rs.getString("category_name"));
 
@@ -242,7 +248,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         String sql = """
                          UPDATE products
-                         SET category_id = ?, product_name = ?, product_price = ?, product_created_at = ?, product_image_path = ?, product_explain = ?
+                         SET category_id = ?, product_name = ?, product_price = ?, product_created_at = ?, product_image_path = ?, product_explain = ?, product_stock = ?
                          WHERE product_id = ?
                      """;
 
@@ -258,7 +264,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                 pstmt.setNull(5, Types.VARCHAR);
             }
             pstmt.setString(6, product.getExplain());
-            pstmt.setInt(7, product.getProductId());
+            pstmt.setInt(7, product.getProductStock());
+            pstmt.setInt(8, product.getProductId());
 
             return pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -311,7 +318,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     product.setCategoryName(rs.getString("category_name"));
 
@@ -353,7 +361,8 @@ public class ProductRepositoryImpl implements ProductRepository {
                             rs.getInt("product_price"),
                             rs.getTimestamp("product_created_at").toLocalDateTime(),
                             rs.getString("product_image_path"),
-                            rs.getString("product_explain")
+                            rs.getString("product_explain"),
+                            rs.getInt("product_stock")
                     );
                     product.setCategoryName(rs.getString("category_name"));
 

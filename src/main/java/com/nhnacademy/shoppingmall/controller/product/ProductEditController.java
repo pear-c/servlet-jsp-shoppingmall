@@ -30,6 +30,7 @@ public class ProductEditController implements BaseController {
         int productPrice = Integer.parseInt(req.getParameter("product_price"));
         String explain = req.getParameter("product_explain");
         int categoryId = Integer.parseInt(req.getParameter("category_id"));
+        int productStock = Integer.parseInt(req.getParameter("product_stock"));
 
         try {
             Part imagePart = req.getPart("product_image");
@@ -40,7 +41,7 @@ public class ProductEditController implements BaseController {
                 imagePath = productService.getProduct(productId).getImagePath(); // 기존 이미지 유지
             }
 
-            Product product = new Product(productId, categoryId, productName, productPrice, LocalDateTime.now(), imagePath, explain);
+            Product product = new Product(productId, categoryId, productName, productPrice, LocalDateTime.now(), imagePath, explain, productStock);
             productService.updateProduct(product);
         } catch (Exception e) {
             throw new RuntimeException(e);

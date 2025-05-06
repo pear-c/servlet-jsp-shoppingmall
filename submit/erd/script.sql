@@ -27,6 +27,7 @@ CREATE TABLE products(
      product_created_at datetime NOT NULL COMMENT '상품등록일',
      product_image_path varchar(255) COMMENT '상품 이미지 경로',
      product_explain text NOT NULL COMMENT '상품설명',
+     product_stock int NOT NULL DEFAULT 0 COMMENT '상품재고',
      PRIMARY KEY(product_id),
      CONSTRAINT fk_products_category FOREIGN KEY(category_id) REFERENCES categories(category_id)
      ON DELETE RESTRICT

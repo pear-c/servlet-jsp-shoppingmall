@@ -10,10 +10,11 @@ public class Product {
     private LocalDateTime createdAt;
     private String imagePath;
     private String explain;
+    private int productStock;
 
     private String categoryName;    // 카테고리 명 출력용 필드
 
-    public Product(int productId, int categoryId, String productName, int productPrice, LocalDateTime createdAt, String imagePath, String explain) {
+    public Product(int productId, int categoryId, String productName, int productPrice, LocalDateTime createdAt, String imagePath, String explain, int productStock) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.productName = productName;
@@ -21,15 +22,17 @@ public class Product {
         this.createdAt = createdAt;
         this.imagePath = imagePath;
         this.explain = explain;
+        this.productStock = productStock;
     }
 
-    public Product(int categoryId, String productName, int productPrice, LocalDateTime createdAt, String imagePath, String explain) {
+    public Product(int categoryId, String productName, int productPrice, LocalDateTime createdAt, String imagePath, String explain, int productStock) {
         this.categoryId = categoryId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.createdAt = createdAt;
         this.imagePath = imagePath;
         this.explain = explain;
+        this.productStock = productStock;
     }
 
     public int getProductId() {
@@ -64,6 +67,10 @@ public class Product {
         return categoryName;
     }
 
+    public int getProductStock() {
+        return productStock;
+    }
+
     public void setProductId(int productId) {
         this.productId = productId;
     }
@@ -90,5 +97,9 @@ public class Product {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public void setProductStock(int productStock) {
+        this.productStock = productStock;
     }
 }

@@ -55,6 +55,16 @@
                                 <span class="fw-bold text-dark">
                                     <fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true" />원
                                 </span>
+                                <small class="text-muted d-block mt-1" style="font-size: 0.85rem;">
+                                    <c:choose>
+                                        <c:when test="${product.productStock > 0}">
+                                            재고: ${product.productStock}개 남음
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="text-danger">품절</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </small>
                             </div>
                         </div>
                     </div>

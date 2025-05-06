@@ -72,6 +72,11 @@
             </div>
 
             <div class="form-floating mb-2">
+              <input type="number" name="product_stock" class="form-control" id="product_stock" placeholder="재고 수량" min="0" required>
+              <label for="product_stock">재고 수량</label>
+            </div>
+
+            <div class="form-floating mb-2">
               <textarea name="product_explain" class="form-control" placeholder="상품 설명" style="height: 80px;" required></textarea>
               <label for="product_explain">상품 설명</label>
             </div>
@@ -110,6 +115,7 @@
             <th>상품명</th>
             <th>가격</th>
             <th>카테고리</th>
+            <th>재고</th>
             <th>관리</th>
           </tr>
           </thead>
@@ -124,6 +130,16 @@
               <td>${product.productName}</td>
               <td><fmt:formatNumber value="${product.productPrice}" type="number" groupingUsed="true" /> 원</td>
               <td>${product.categoryName}</td>
+              <td>
+                <c:choose>
+                  <c:when test="${product.productStock > 0}">
+                    <span class="badge bg-success">${product.productStock}개</span>
+                  </c:when>
+                  <c:otherwise>
+                    <span class="badge bg-danger">품절</span>
+                  </c:otherwise>
+                </c:choose>
+              </td>
               <td>
                 <a href="/product/detail.do?product_id=${product.productId}" class="btn btn-sm btn-outline-secondary me-1">상세보기</a>
                 <a href="/admin/product/edit.do?product_id=${product.productId}" class="btn btn-sm btn-outline-primary">수정</a>
